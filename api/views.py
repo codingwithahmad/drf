@@ -12,6 +12,7 @@ from rest_framework.generics import (
 	
 	RetrieveUpdateAPIView,
 )
+from .permissions import IsSuperUser
 from rest_framework.permissions import IsAdminUser
 from .serializers import ArticleSerializer
 from rest_framework.generics import ListAPIView, ListCreateAPIView
@@ -31,14 +32,15 @@ class ArticlesDetail(RetrieveDestroyAPIView):
 class UserList(ListCreateAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
-	permission_classes = (IsAdminUser, )
+	permission_classes = (IsSuperUser, )
 
 
 class UserDetail(RetrieveDestroyAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
-	permission_classes = (IsAdminUser, )
+	permission_classes = (IsSuperUser, )
 
 class UserUpdate(RetrieveUpdateAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
+	permission_classes = (IsSuperUser, )
