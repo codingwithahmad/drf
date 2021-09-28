@@ -11,8 +11,10 @@ from rest_framework.generics import (
 	RetrieveDestroyAPIView, 
 	
 	RetrieveUpdateAPIView,
+
+	RetrieveUpdateDestroyAPIView,
 )
-from .permissions import IsSuperUser
+from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsStaffOrReadOnly
 from rest_framework.permissions import IsAdminUser
 from .serializers import ArticleSerializer
 from rest_framework.generics import ListAPIView, ListCreateAPIView
@@ -22,10 +24,11 @@ class ArticlesList(ListCreateAPIView):
 	serializer_class = ArticleSerializer
 
 
-class ArticlesDetail(RetrieveDestroyAPIView):
+class ArticlesDetail(RetrieveUpdateDestroyAPIView):
 	queryset = Articles.objects.all()
 	serializer_class = ArticleSerializer
 	lookup_field = 'slug'
+	permission_classes = (IsStaffOrReadOnly, IsAuthorOrReadOnly)
 
 
 
