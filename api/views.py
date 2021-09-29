@@ -14,7 +14,14 @@ from rest_framework.generics import (
 
 	RetrieveUpdateDestroyAPIView,
 )
-from .permissions import IsSuperUser, IsAuthorOrReadOnly, IsStaffOrReadOnly
+from .permissions import (
+ 
+	IsAuthorOrReadOnly, 
+
+	IsStaffOrReadOnly,
+
+	IsSuperUserOrStaffReadOnly,
+)
 from rest_framework.permissions import IsAdminUser
 from .serializers import ArticleSerializer
 from rest_framework.generics import ListAPIView, ListCreateAPIView
@@ -35,15 +42,15 @@ class ArticlesDetail(RetrieveUpdateDestroyAPIView):
 class UserList(ListCreateAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
-	permission_classes = (IsSuperUser, )
+	permission_classes = (IsSuperUserOrStaffReadOnly, )
 
 
 class UserDetail(RetrieveDestroyAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
-	permission_classes = (IsSuperUser, )
+	permission_classes = (IsSuperUserOrStaffReadOnly, )
 
 class UserUpdate(RetrieveUpdateAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
-	permission_classes = (IsSuperUser, )
+	permission_classes = (IsSuperUserOrStaffReadOnly, )

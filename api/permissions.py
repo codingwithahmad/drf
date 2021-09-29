@@ -28,3 +28,17 @@ class IsAuthorOrReadOnly(BasePermission):
 			# get access to author of object 
 			request.user.is_authenticated and obj.author == request.user 
 		)
+
+class IsSuperUserOrStaffReadOnly(BasePermission):
+
+	def has_permission(self, request, view):
+		return bool (
+			# get access to staff user just for safe_methods
+			request.method in SAFE_METHODS and
+			request.user and 
+			request.user.is_staff
+			or 
+			# get access to superuser
+			request.user and request.user.is_superuser
+		)
+			
