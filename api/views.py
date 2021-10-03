@@ -40,7 +40,8 @@ class ArticlesDetail(RetrieveUpdateDestroyAPIView):
 
 
 class UserList(ListCreateAPIView):
-	queryset = User.objects.all()
+	def get_queryset(self):
+		return User.objects.all()
 	serializer_class = UserSerializer
 	permission_classes = (IsSuperUserOrStaffReadOnly, )
 
