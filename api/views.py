@@ -1,4 +1,6 @@
 # from django.shortcuts import render
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from blog.models import Articles
 from django.contrib.auth.models import User
 from .serializers import ArticleSerializer, UserSerializer
@@ -22,7 +24,7 @@ from .permissions import (
 
 	IsSuperUserOrStaffReadOnly,
 )
-from rest_framework.permissions import IsAdminUser
+from rest_framework.permissions import IsAuthenticated
 from .serializers import ArticleSerializer
 from rest_framework.generics import ListAPIView, ListCreateAPIView
 # Create your views here.
@@ -40,8 +42,7 @@ class ArticlesDetail(RetrieveUpdateDestroyAPIView):
 
 
 class UserList(ListCreateAPIView):
-	def get_queryset(self):
-		return User.objects.all()
+	queryset = User.objects.all()
 	serializer_class = UserSerializer
 	permission_classes = (IsSuperUserOrStaffReadOnly, )
 
@@ -55,3 +56,11 @@ class UserUpdate(RetrieveUpdateAPIView):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 	permission_classes = (IsSuperUserOrStaffReadOnly, )
+
+
+class RevokeToken(APIView):
+	permission_classes = (IsAuthenticated, )
+
+	def delete(self, request):
+		request.auth.delete()
+		return Response(status=204)
