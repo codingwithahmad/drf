@@ -1,19 +1,7 @@
 from blog.models import Articles
 from django.contrib.auth.models import User
 from .serializers import ArticleSerializer, UserSerializer
-from rest_framework.viewsets import ModelViewset
-from rest_framework.generics import (
-	
-	ListAPIView, 
-	
-	ListCreateAPIView, 
-	
-	RetrieveDestroyAPIView, 
-	
-	RetrieveUpdateAPIView,
-
-	RetrieveUpdateDestroyAPIView,
-)
+from rest_framework.viewsets import ModelViewSet
 from .permissions import (
  
 	IsAuthorOrReadOnly, 
@@ -24,12 +12,11 @@ from .permissions import (
 )
 from rest_framework.permissions import IsAuthenticated
 from .serializers import ArticleSerializer
-from rest_framework.generics import ListAPIView, ListCreateAPIView
 # Create your views here.
 
 
 
-class ArticleViewSet(ModelViewset):
+class ArticleViewSet(ModelViewSet):
 	queryset = Articles.objects.all()
 	serializer_class = ArticleSerializer
 
@@ -40,10 +27,10 @@ class ArticleViewSet(ModelViewset):
 		else:
 			permission_classes = (IsStaffOrReadOnly, IsAuthorOrReadOnly)
 
-		return [permissions() for permission in permission_classes]
+		return [permission() for permission in permission_classes]
 
 
-class UserViewSet(ModelViewset):
+class UserViewSet(ModelViewSet):
 	queryset = User.objects.all()
 	serializer_class = UserSerializer
 	permission_classes = (IsSuperUserOrStaffReadOnly, )
