@@ -1,5 +1,5 @@
 from blog.models import Articles
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from .serializers import ArticleSerializer, UserSerializer
 from rest_framework.viewsets import ModelViewSet
 from .permissions import (
@@ -31,7 +31,7 @@ class ArticleViewSet(ModelViewSet):
 
 
 class UserViewSet(ModelViewSet):
-	queryset = User.objects.all()
+	queryset = get_user_model().objects.all()
 	serializer_class = UserSerializer
 	permission_classes = (IsSuperUserOrStaffReadOnly, )
 
