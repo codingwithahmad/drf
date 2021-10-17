@@ -17,23 +17,9 @@ from .serializers import ArticleSerializer
 
 
 class ArticleViewSet(ModelViewSet):
+	queryset = Articles.objects.all()
 	serializer_class = ArticleSerializer
-
-
-	def get_queryset(self):
-		queryset = Articles.objects.all()
-		status = self.request.query_params.get('status')
-		author = self.request.query_params.get('author')
-		
-
-		if status is not None:
-			queryset = queryset.filter(status=status)
-
-		if author is not None:
-			queryset = queryset.filter(author=author)
-		
-
-		return queryset
+	filterset_fields = ['status', 'author__username']
 
 	def get_permissions(self):
 		if self.action in ['list', 'create']:
