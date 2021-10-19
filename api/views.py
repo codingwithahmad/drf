@@ -28,6 +28,12 @@ class ArticleViewSet(ModelViewSet):
 	 	"author__last_name",
 	]
 
+	ordering = ["-publish"]
+	ordering_fields = [
+		"publish",
+		"status",
+	]
+
 	def get_permissions(self):
 		if self.action in ['list', 'create']:
 			permission_classes = (IsStaffOrReadOnly, )
